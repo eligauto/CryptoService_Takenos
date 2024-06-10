@@ -48,9 +48,12 @@ export class CryptoService implements ICryptoService {
           price_ars: crypto.quote.USD.price * usdtPriceInARS,
           percent_change_24h: crypto.quote.USD.percent_change_24h,
         };
+      } else {
+        throw new HttpException(
+          `Cryptocurrency with symbol ${symbol} not found`,
+          HttpStatus.NOT_FOUND,
+        );
       }
-
-      return null;
     } catch (error) {
       this.handleServiceError(error, 'Error getting crypto by symbol');
     }

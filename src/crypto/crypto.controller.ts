@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { CryptoService } from './crypto.service';
 
 @Controller('crypto')
@@ -11,8 +11,17 @@ export class CryptoController {
   }
 
   @Get(':symbol')
-  getCryptoBySymbol(@Param('symbol') symbol: string) {
-    return this.cryptoService.getCryptoBySymbol(symbol.toUpperCase());
+  async getCryptoBySymbol(
+    @Param('symbol')
+    symbol: string,
+  ) {
+    const upperSymbol = symbol.toUpperCase();
+    const crypto = await this.cryptoService.getCryptoBySymbol(upperSymbol);
+    
+    if (!crypto) {
+      throw new BadRequestException(`Cryptocurrency with symbol ${upperSymbol} not found`);
+    }
+    
+    return crypto;
   }
 }
-
