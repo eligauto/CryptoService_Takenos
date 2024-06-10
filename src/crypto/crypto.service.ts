@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, BadRequestException, UnauthorizedException, ForbiddenException, HttpException, HttpStatus } from '@nestjs/common';
 import { ICryptoService } from './interfaces/crypto-service.interface';
 import { CoinMarketCapService } from './crypto-data-providers/coinmarketcap.service';
 import { CriptoYaService } from './crypto-data-providers/criptoya.service';
@@ -11,36 +11,59 @@ export class CryptoService implements ICryptoService {
   ) {}
 
   async getTopCryptos(): Promise<any> {
-    const coinMarketCapResponse = await this.coinMarketCapService.getCryptos();
-    const usdtPriceInARS = await this.criptoYaService.getUsdtPriceInARS();
+    try {
+      const coinMarketCapResponse = await this.coinMarketCapService.getCryptos();
+      const usdtPriceInARS = await this.criptoYaService.getUsdtPriceInARS();
 
-    const top5Cryptos = coinMarketCapResponse.data.data.slice(0, 5).map((crypto) => ({
-      name: crypto.name,
-      symbol: crypto.symbol,
-      price_usd: crypto.quote.USD.price,
-      price_ars: crypto.quote.USD.price * usdtPriceInARS,
-      percent_change_24h: crypto.quote.USD.percent_change_24h,
-    }));
+      const top5Cryptos = coinMarketCapResponse.data.data
+        .slice(0, 5)
+        .map((crypto) => ({
+          name: crypto.name,
+          symbol: crypto.symbol,
+          price_usd: crypto.quote.USD.price,
+          price_ars: crypto.quote.USD.price * usdtPriceInARS,
+          percent_change_24h: crypto.quote.USD.percent_change_24h,
+        }));
 
-    return top5Cryptos;
+      return top5Cryptos;
+    } catch (error) {
+      this.handleServiceError(error, 'Error getting top cryptos');
+    }
   }
 
   async getCryptoBySymbol(symbol: string): Promise<any> {
-    const coinMarketCapResponse = await this.coinMarketCapService.getCryptos();
-    const usdtPriceInARS = await this.criptoYaService.getUsdtPriceInARS();
+    try {
+      const coinMarketCapResponse = await this.coinMarketCapService.getCryptos();
+      const usdtPriceInARS = await this.criptoYaService.getUsdtPriceInARS();
 
-    const crypto = coinMarketCapResponse.data.data.find((crypto) => crypto.symbol === symbol);
+      const crypto = coinMarketCapResponse.data.data.find(
+        (crypto) => crypto.symbol === symbol,
+      );
 
-    if (crypto) {
-      return {
-        name: crypto.name,
-        symbol: crypto.symbol,
-        price_usd: crypto.quote.USD.price,
-        price_ars: crypto.quote.USD.price * usdtPriceInARS,
-        percent_change_24h: crypto.quote.USD.percent_change_24h,
-      };
+      if (crypto) {
+        return {
+          name: crypto.name,
+          symbol: crypto.symbol,
+          price_usd: crypto.quote.USD.price,
+          price_ars: crypto.quote.USD.price * usdtPriceInARS,
+          percent_change_24h: crypto.quote.USD.percent_change_24h,
+        };
+      }
+
+      return null;
+    } catch (error) {
+      this.handleServiceError(error, 'Error getting crypto by symbol');
     }
+  }
 
-    return null;
+  private handleServiceError(error: any, defaultMessage: string): void {
+    if (error instanceof BadRequestException || 
+        error instanceof UnauthorizedException || 
+        error instanceof ForbiddenException || 
+        error instanceof HttpException || 
+        error instanceof InternalServerErrorException) {
+      throw error;
+    }
+    throw new InternalServerErrorException(defaultMessage);
   }
 }
