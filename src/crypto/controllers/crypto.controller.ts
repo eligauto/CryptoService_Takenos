@@ -1,5 +1,5 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
-import { CryptoService } from './crypto.service';
+import { CryptoService } from '../services/crypto.service'; 
 
 @Controller('crypto')
 export class CryptoController {

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CryptoService } from './crypto.service';
-import { CryptoController } from './crypto.controller';
+import { CryptoService } from './services/crypto.service'; 
+import { CryptoController } from './controllers/crypto.controller';
 import { HttpModule } from '@nestjs/axios';
 import { CoinMarketCapService } from './crypto-data-providers/coinmarketcap.service';
 import { CriptoYaService } from './crypto-data-providers/criptoya.service';
-import { HttpClientService } from './http-client.service';
+import { HttpClientService } from './services/http-client.service'; 
 
 @Module({
   imports: [HttpModule],

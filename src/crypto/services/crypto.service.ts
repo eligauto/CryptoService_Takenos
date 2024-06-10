@@ -1,7 +1,8 @@
 import { Injectable, InternalServerErrorException, BadRequestException, UnauthorizedException, ForbiddenException, HttpException, HttpStatus } from '@nestjs/common';
-import { ICryptoService } from './interfaces/crypto-service.interface';
-import { CoinMarketCapService } from './crypto-data-providers/coinmarketcap.service';
-import { CriptoYaService } from './crypto-data-providers/criptoya.service';
+import { ICryptoService } from '../interfaces/crypto-service.interface';
+import { CoinMarketCapService } from '../crypto-data-providers/coinmarketcap.service';
+import { CriptoYaService } from '../crypto-data-providers/criptoya.service';
+
 
 @Injectable()
 export class CryptoService implements ICryptoService {

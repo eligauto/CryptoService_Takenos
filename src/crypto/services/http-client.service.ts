@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { AxiosResponse } from 'axios';
-import { IHttpClient } from './interfaces/http-client.interface';
+import { IHttpClient } from '../interfaces/http-client.interface';
 
 @Injectable()
 export class HttpClientService implements IHttpClient {
