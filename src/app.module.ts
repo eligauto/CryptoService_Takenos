@@ -1,7 +1,12 @@
 import { Module } from '@nestjs/common';
+import { CryptoModule } from './crypto/crypto.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    CryptoModule,
+  ],
   controllers: [],
   providers: [],
 })
