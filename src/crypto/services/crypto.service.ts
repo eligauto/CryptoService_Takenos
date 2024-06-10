@@ -34,14 +34,13 @@ export class CryptoService implements ICryptoService {
 
   async getCryptoBySymbol(symbol: string): Promise<any> {
     try {
-      const coinMarketCapResponse = await this.coinMarketCapService.getCryptos();
+      const coinMarketCapResponse = await this.coinMarketCapService.getCryptoBySymbol(symbol);
       const usdtPriceInARS = await this.criptoYaService.getUsdtPriceInARS();
-
-      const crypto = coinMarketCapResponse.data.data.find(
-        (crypto) => crypto.symbol === symbol,
-      );
-
-      if (crypto) {
+  
+      const cryptoData = coinMarketCapResponse[symbol];
+  
+      if (cryptoData && cryptoData.length > 0) {
+        const crypto = cryptoData[0];
         return {
           name: crypto.name,
           symbol: crypto.symbol,

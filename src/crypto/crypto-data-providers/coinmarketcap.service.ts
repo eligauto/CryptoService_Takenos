@@ -4,17 +4,31 @@ import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class CoinMarketCapService {
-  private coinMarketCapUrl = process.env.COINMARKETCAP_API_URL;
+  private getTopCryptosUrl = process.env.COINMARKETCAP_API_URL + '/listings/latest';
+  private getCryptoBySymbolUrl = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
 
   constructor(@Inject('IHttpClient') private httpClient: IHttpClient) {}
 
   async getCryptos(): Promise<AxiosResponse<any>> {
     const options = {
       headers: { 'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY },
+      };
+      try {
+      
+      const response = await this.httpClient.get(this.getTopCryptosUrl, options);
+      return response;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  async getCryptoBySymbol(symbol: string): Promise<any> {
+    const options = {
+      headers: { 'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY },
     };
     try {
-      const response = await this.httpClient.get(this.coinMarketCapUrl, options);
-      return response;
+      const response = await this.httpClient.get(`${this.getCryptoBySymbolUrl}?symbol=${symbol}`, options);
+      return response.data.data;
     } catch (error) {
       this.handleError(error);
     }
