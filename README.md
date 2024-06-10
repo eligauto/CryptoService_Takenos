@@ -47,6 +47,53 @@ curl --location 'http://localhost:3000/api/v1/crypto/top'
 ### Obtener por symbol
 
 ```bash
-curl --location 'http://localhost:3000/api/v1/crypto/:symbol' 
+curl --location 'http://localhost:3000/api/v1/crypto/:symbol'
 ```
+
+## Respuestas
+
+### ¿Cómo se podrían aprovechar éstas funcionalidades dentro del producto de Takenos?
+
+1. Portafolio de Inversiones: Los usuarios pueden crear y gestionar un portafolio de criptomonedas. La API puede ofrecer actualizaciones en tiempo real sobre el valor de su portafolio en Pesos.
+
+2. Alertas de Precios: Los usuarios pueden configurar alertas de precios para recibir notificaciones cuando el precio de una criptomoneda alcance un valor específico.
+
+3. Gráficos e Informes: Ofrecer gráficos interactivos que muestren la evolución de los precios y capitalización de mercado de las criptomonedas.
+
+4. Noticias y Análisis: Integrar noticias y análisis sobre el mercado de criptomonedas para mantener a los usuarios informados.
+
+5. Conversor de Monedas: Permitir a los usuarios convertir el valor de una criptomoneda a Pesos o a otra criptomoneda.
+
+### ¿Cómo se vería una arquitectura completa en la que se guarden datos relacionados a éstas funcionalidades?
+
+1. Almacenamiento: Utilizar una base de datos relacional (p.ej., PostgreSQL) para almacenar datos históricos de precios, información de usuarios, y configuraciones de alertas.
+
+2. Caching: Implementar caching (p.ej., Redis) para almacenar datos frecuentemente consultados y mejorar la velocidad de respuesta.
+
+3. Microservicios: Dividir la aplicación en microservicios para manejar distintas funcionalidades, como autenticación, gestión de portafolios, y notificaciones.
+
+4. APIs Externas: Crear servicios dedicados para interactuar con las APIs de CoinMarketCap y CriptoYa, asegurando que se manejan correctamente los límites de rate y se implementan estrategias de reintento.
+
+5. Inclusión de Websockets: Utilizar Websockets para ofrecer actualizaciones en tiempo real sobre el valor de las criptomonedas y notificaciones de alertas.
+
+6. Considerar herramientas como AWS, Google Cloud, o Azure para alojar la aplicación y garantizar escalabilidad y disponibilidad.
+
+7. Implementar un sistema de monitoreo y logging para rastrear el rendimiento de la aplicación y detectar posibles problemas.
+
+8. Pruebas Automatizadas: Realizar pruebas unitarias y de integración para garantizar la calidad del código y la funcionalidad de la aplicación.
+
+
+### ¿Cómo se manejarían algunos aspectos técnicos como la autenticación, el cifrado de datos, y otros aspectos relevantes a la hora de terminar de implementar éstas funcionalidades?
+
+1. JWT: Implementar JWT para autenticación segura de los usuarios.
+
+2. OAuth: Ofrecer opciones de inicio de sesión con OAuth (p.ej., Google, Facebook) para mejorar la experiencia del usuario.
+
+3. CORS: Configurar CORS para restringir el acceso a la API desde dominios no autorizados.
+
+4. SSL/TLS: Asegurar que todas las comunicaciones con la API se realizan a través de HTTPS.
+
+5. Encriptación: Utilizar encriptación para proteger datos sensibles almacenados en la base de datos (p. ej. bcrypt para contraseñas).
+
+6. Rate Limiting: Implementar límites de tasa para prevenir ataques de denegación de servicio y proteger la API de abusos.
 

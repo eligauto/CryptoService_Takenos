@@ -8,7 +8,7 @@ export class CoinMarketCapService {
 
   constructor(@Inject('IHttpClient') private httpClient: IHttpClient) {}
 
-  async getCryptos(symbol?: string): Promise<AxiosResponse<any>> {
+  async getCryptos(): Promise<AxiosResponse<any>> {
     const options = {
       headers: { 'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY },
     };
